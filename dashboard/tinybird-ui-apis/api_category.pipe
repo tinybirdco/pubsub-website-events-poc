@@ -1,0 +1,10 @@
+TOKEN "api_category_endpoint_read" READ
+
+NODE endpoint
+SQL >
+
+    SELECT DISTINCT category FROM products
+    UNION ALL
+    SELECT 'all' as category
+
+

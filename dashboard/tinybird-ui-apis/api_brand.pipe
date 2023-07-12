@@ -1,0 +1,8 @@
+TOKEN "api_brand_endpoint_read" READ
+
+NODE endpoint
+SQL >
+
+    SELECT DISTINCT brand FROM products
+    UNION ALL
+    SELECT 'all' as brand
