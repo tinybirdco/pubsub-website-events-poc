@@ -1,0 +1,14 @@
+# Data Source created from Pipe 'make_daily_events_mv'
+DESCRIPTION >
+    Generated from the "make_daily_events_mv" Pipe. That Pipe counts events as fresh data streams in and builds new daily metric entries... Keeps track of total events and counts view/cart/sale event types.
+
+SCHEMA >
+    `event_day` DateTime,
+    `n_events` AggregateFunction(count),
+    `n_views` AggregateFunction(countIf, UInt8),
+    `n_carts` AggregateFunction(countIf, UInt8),
+    `n_sales` AggregateFunction(countIf, UInt8)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(event_day)"
+ENGINE_SORTING_KEY "event_day"

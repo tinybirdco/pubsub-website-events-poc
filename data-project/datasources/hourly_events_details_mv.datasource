@@ -1,0 +1,13 @@
+# Data Source created from Pipe 'make_hourly_events_details_mv'
+
+SCHEMA >
+    `event_hour` DateTime,
+    `product` String,
+    `n_events` AggregateFunction(count),
+    `n_views` AggregateFunction(countIf, UInt8),
+    `n_carts` AggregateFunction(countIf, UInt8),
+    `n_sales` AggregateFunction(countIf, UInt8)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYear(event_hour)"
+ENGINE_SORTING_KEY "event_hour, product"

@@ -1,0 +1,21 @@
+# Data Source created from Pipe 'decoded_events'
+DESCRIPTION >
+    Generated from the "decoded_events" Pipe. That Pipe is used to first decode the Pub/Sub message contents, then extract needed attributes from the decoded JSON objects.  Here we extract the 'top level' JSON attributes of interest, along with select child objects.
+
+SCHEMA >
+    `event_id` String,
+    `event_time` DateTime64(3),
+    `event` String,
+    `product` String,
+    `city` String,
+    `country` String,
+    `publish_time` DateTime64(3),
+    `environment` String,
+    `latency` Int64,
+    `location_object` String,
+    `generator_object` String,
+    `actor_object` String
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(event_time)"
+ENGINE_SORTING_KEY "event_time, event, product"

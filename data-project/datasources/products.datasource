@@ -1,0 +1,10 @@
+
+SCHEMA >
+    `product` String,
+    `category` String,
+    `model` String,
+    `brand` String,
+    `price` Int16
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "product, model, brand, price"
