@@ -1,0 +1,24 @@
+DESCRIPTION >
+	This Pipe counts events as fresh data streams in and builds new daily metric entries... Keeps track of total events and counts view/cart/sale event types.
+
+No dynamic parameters
+
+
+NODE daily_events
+SQL >
+
+    SELECT
+        toStartOfDay(event_time) AS event_day,
+        countState() AS n_events,
+        countIfState(event = 'view') AS n_views,
+        countIfState(event = 'cart') AS n_carts,
+        countIfState(event = 'sale') AS n_sales
+    FROM events_mv
+    GROUP BY event_day
+
+TYPE materialized
+DATASOURCE daily_events_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(event_day)"
+ENGINE_SORTING_KEY "event_day"
+

@@ -1,0 +1,40 @@
+TOKEN "event_extraction_pipe_endpoint_read_2849" READ
+
+NODE decode_pubsub_messages
+SQL >
+
+    SELECT
+          message_message_id as event_id,
+          message_publish_time as publish_time,
+          base64Decode(message_data) as event_data
+    FROM encoded_messages
+
+
+
+NODE events
+SQL >
+
+    SELECT
+        event_id,
+        CAST(
+            JSONExtractString(event_data, 'timestamp'), 'DateTime64'
+        ) as event_time,
+       JSONExtractString(event_data, 'event') as event,
+       JSONExtractString(event_data, 'product') as product,
+       JSONExtractString(event_data, 'city') as city,
+       JSONExtractString(event_data, 'country') as country,
+       publish_time,
+       JSONExtractString(event_data, 'environment') as environment,
+       date_diff('second', event_time, publish_time) as latency,
+       JSONExtractString(event_data, 'location') as location_object,
+       JSONExtractString(event_data, 'generator') as generator_object,
+       JSONExtractString(event_data, 'actor') as actor_object
+    FROM decode_pubsub_messages
+    ORDER BY event_time DESC
+
+TYPE materialized
+DATASOURCE events_mv
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(event_time)"
+ENGINE_SORTING_KEY "event_time, event, product"
+

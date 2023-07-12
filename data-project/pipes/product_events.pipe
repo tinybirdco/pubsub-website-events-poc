@@ -1,0 +1,69 @@
+DESCRIPTION >
+	Retrieves events with product details.
+
+
+TOKEN "product_events_endpoint_read_8295" READ
+
+NODE apply_time_period
+SQL >
+
+    %
+    SELECT 
+      e.event_time, 
+      e.publish_time,
+      e.event_id,
+      p.product as product, 
+      p.category, 
+      p.model, 
+      p.brand, 
+      p.price 
+    FROM events_mv e, sprinter_products p
+    WHERE e.product = p.product
+      {% if defined(start_time) and defined(end_time) %}
+        AND toDateTime(event_time) BETWEEN {{ DateTime(start_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to 24 hours ago. Defines the start of the period of interest. ") }} AND {{ DateTime(end_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to time of request. Defines the end of the period of interest.") }}
+      {% end %}
+      {% if not defined(start_time) and not defined(end_time) %}
+        AND toDateTime(event_time) BETWEEN addDays(now(),-1) AND now()
+      {% end %}
+      {% if defined(start_time) and not defined(end_time) %}
+         AND toDateTime(event_time) BETWEEN {{ DateTime(start_time) }} AND now()
+      {% end %}
+      {% if not defined(start_time) and defined(end_time) %}
+         AND toDateTime(event_time) BETWEEN addDays(toDateTime({{DateTime(end_time)}}),-1) AND {{ DateTime(end_time) }}
+      {% end %}
+
+    ORDER BY e.event_time DESC
+    LIMIT {{ Int16(max_events, 1000, description="Maximum number of events to return.") }}
+
+
+
+
+NODE apply_product_filters
+SQL >
+
+    %
+
+    SELECT event_time,
+      event_id,
+      product,
+      category,
+      brand,
+      model,
+      price
+    FROM apply_time_period
+    WHERE 1 = 1
+    {% if defined(brand) %}
+      {% if brand != 'all' %}
+        AND lowerUTF8(brand) = lowerUTF8({{ String(brand, 'all', description="Brand name. Default is all brands. Available brands: 'ASICS', 'Fila', 'Puma', Nike', 'Adidas', 'EastPak'")}})
+      {% end %}
+    {% end %}
+    {% if defined(category) %}
+       {% if category != 'all' %}
+          AND lowerUTF8(category) = lowerUTF8({{ String(category, 'all', description="Product category. Default is all categories. Available categories: 'shoe', 'shirt', 'pants', 'swimsuit', 'backpack' ''")}})
+      {% end %}
+    {% end %}
+
+    ORDER BY event_time DESC
+
+
+
