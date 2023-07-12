@@ -1,0 +1,662 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Visualizing incoming Pub/Sub ecommerce events (view, cart, and sale)",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 12,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 18,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "maxDataPoints": 99999,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.data[*].Events"
+            },
+            {
+              "jsonPath": "$.data[*].Views",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].Carts",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].Sales",
+              "language": "jsonpath",
+              "name": ""
+            }
+          ],
+          "headers": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "token",
+              "p.eyJ1IjogIjRhM2M2M2Y2LWVhNTMtNDJkMi1iZDcxLTBmNDQxOGU5YWUxZiIsICJpZCI6ICJiOWVjMDU0MS1kZWMxLTQ5MzctOTkzYS1kMGU2YjVjMTU4MDgifQ.f_JprWWdTo1qlUToGFz2CI0mK1PGOjuVrSE7bAyG3yM"
+            ],
+            [
+              "start_time",
+              "${__from:date}"
+            ],
+            [
+              "end_time",
+              "${__to:date}"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/v0/pipes/event_counts.json"
+        }
+      ],
+      "title": "Total events",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "minWidth": 50
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 4
+      },
+      "id": 7,
+      "maxDataPoints": 9999,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.data[*].event_time"
+            },
+            {
+              "jsonPath": "$.data[*].brand",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].category",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].model",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].price",
+              "language": "jsonpath",
+              "name": ""
+            }
+          ],
+          "headers": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "token",
+              "p.eyJ1IjogIjRhM2M2M2Y2LWVhNTMtNDJkMi1iZDcxLTBmNDQxOGU5YWUxZiIsICJpZCI6ICIzZjM3ZDZiNS02MzIxLTQyMTctYTM2Ny0yMGRhY2E3ZTE4Y2QifQ.fp7hOR2CPmZ2I9aVi0mIlVEjmPV_hvcRCQ0gXThBpo8"
+            ],
+            [
+              "brand",
+              "${brand}"
+            ],
+            [
+              "category",
+              "${category}"
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/v0/pipes/product_events.json"
+        }
+      ],
+      "title": "Recent Events",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "json-view"
+            },
+            "inspect": false,
+            "minWidth": 50
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 11
+      },
+      "id": 4,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.data[*].total_sales"
+            },
+            {
+              "jsonPath": "$.data[*].brand",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].model",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].category",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].price",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].event_count",
+              "language": "jsonpath",
+              "name": ""
+            }
+          ],
+          "headers": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "token",
+              "p.eyJ1IjogIjRhM2M2M2Y2LWVhNTMtNDJkMi1iZDcxLTBmNDQxOGU5YWUxZiIsICJpZCI6ICIxMDNiNTE4MC0yMGNmLTRjM2ItOTQyZS1kZGNhMTZjNDMyOGMifQ.-SbVnHpRm5BxAcUCxn4iZpvjw1Z5JsPPge4LVq9dzwI"
+            ],
+            [
+              "brand",
+              "${brand}"
+            ],
+            [
+              "category",
+              "${category}"
+            ],
+            [
+              "start_time",
+              "${__from:date} "
+            ],
+            [
+              "end_time",
+              "${__to:date} "
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/v0/pipes/top_products.json"
+        }
+      ],
+      "title": "Top 5 products",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-json-datasource",
+        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total_events"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "view_events"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 0,
+        "y": 18
+      },
+      "id": 3,
+      "maxDataPoints": 30000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "targets": [
+        {
+          "cacheDurationSeconds": 0,
+          "datasource": {
+            "type": "marcusolsson-json-datasource",
+            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+          },
+          "fields": [
+            {
+              "jsonPath": "$.data[*].total_events"
+            },
+            {
+              "jsonPath": "$.data[*].hour",
+              "language": "jsonpath",
+              "name": "",
+              "type": "time"
+            },
+            {
+              "jsonPath": "$.data[*].view_events",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].cart_events",
+              "language": "jsonpath",
+              "name": ""
+            },
+            {
+              "jsonPath": "$.data[*].sale_events",
+              "language": "jsonpath",
+              "name": ""
+            }
+          ],
+          "headers": [
+            [
+              "",
+              ""
+            ]
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "token",
+              "p.eyJ1IjogIjRhM2M2M2Y2LWVhNTMtNDJkMi1iZDcxLTBmNDQxOGU5YWUxZiIsICJpZCI6ICI4MzBhZGVmZS01MDAwLTRkOTQtYjA4My1kZWRmMGI4YTkyODQifQ.gtZHvzZUrOv_KuGrYZNUp0ijfIGixxXx2kDjRmCJc7M"
+            ],
+            [
+              "brand",
+              "${brand}"
+            ],
+            [
+              "category",
+              "${category}"
+            ],
+            [
+              "start_time",
+              "${__from:date} "
+            ],
+            [
+              "end_time",
+              "${__to:date} "
+            ]
+          ],
+          "queryParams": "",
+          "refId": "A",
+          "urlPath": "/v0/pipes/hourly_by_product.json"
+        }
+      ],
+      "title": "Hourly events",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "shoe",
+          "value": "shoe"
+        },
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+        },
+        "definition": "$.data[*].category",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "category",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 300,
+          "fields": [
+            {
+              "jsonPath": "$.data[*].category"
+            }
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "token",
+              "p.eyJ1IjogIjRhM2M2M2Y2LWVhNTMtNDJkMi1iZDcxLTBmNDQxOGU5YWUxZiIsICJpZCI6ICI4OTlhODkzZS0zNTM0LTRhNmEtOTVlNC05Y2MxODhjNGM5YzUifQ.nDrHLH4bPi2_4n4IUvE5XbDOXS4p8SFxn_Py89usRP4"
+            ]
+          ],
+          "queryParams": "",
+          "urlPath": "/v0/pipes/api_category.json"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "all",
+          "value": "all"
+        },
+        "datasource": {
+          "type": "marcusolsson-json-datasource",
+          "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+        },
+        "definition": "$.data[*].brand",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "brand",
+        "options": [],
+        "query": {
+          "cacheDurationSeconds": 300,
+          "fields": [
+            {
+              "jsonPath": "$.data[*].brand"
+            }
+          ],
+          "method": "GET",
+          "params": [
+            [
+              "token",
+              "p.eyJ1IjogIjRhM2M2M2Y2LWVhNTMtNDJkMi1iZDcxLTBmNDQxOGU5YWUxZiIsICJpZCI6ICJiZTM4Y2M1NC0yN2NmLTQ5MzUtYTEyYS00ZTQxMTllNjBkZGQifQ.yHgIxB4FlW8JD1dMcyJdi194EJQ4qfNyjEbQPFDI-kk"
+            ]
+          ],
+          "queryParams": "",
+          "urlPath": "/v0/pipes/api_brand.json"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6d",
+    "to": "now-0m"
+  },
+  "timepicker": {
+    "hidden": false,
+    "nowDelay": "2s",
+    "refresh_intervals": [
+      "5s"
+    ]
+  },
+  "timezone": "",
+  "title": "POC - Web site events",
+  "uid": "de97b0fc-7564-4f55-a43b-6f089cabbf5d",
+  "version": 29,
+  "weekStart": ""
+}
