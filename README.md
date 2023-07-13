@@ -4,11 +4,11 @@ This repo contains an ecommerce demo that simulates a live stream of website use
 
 **Here are the components of this demo:**
 + A Python script that generates JSON event objects and publishes them to Google Pub/Sub. See the script [HERE](./data-generator/pubsub_json_generator.py).
-+ A `encoded_messages` Data Source that stores the encoded Google Pub/Sub messages. Learn more about this project's Data Sources [HERE](./data-project/datasources/README.md). 
-+ A `decoded_events` Pipe the decodes the JSON event objects from the messages and materializes a `events_mv` Data Source. This Data Source represents our fundamental 'table' of event objects. See its definition and schema [HERE](./data-project/pipes/decoded_events.pipe).
-+ A `products` Data Source that stores product metadata including model, brand, category, and price attributes. See its schema [HERE](./data-project/datasources/products.datasource).
-+ A set of Pipes that populate the Materialized Views used to generate daily and hourly rollups of event type counts. See [HERE](./data-project/pipes/).
- + A set of Pipes used to publish API Endpoints to list events and rank 'top' products. To see all the API Endpoints, see [HERE](./data-project/endpoints/).
++ A `encoded_messages` Data Source that stores the encoded Google Pub/Sub messages. Learn more about this project's [Data Sources](./data-project/datasources/README.md). 
++ A `decoded_events` Pipe the decodes the JSON event objects from the messages and materializes a `events_mv` Data Source. This Data Source represents our fundamental 'table' of event objects. See its [definition and schema](./data-project/pipes/decoded_events.pipe).
++ A `products` Data Source that stores product metadata including model, brand, category, and price attributes. See its [definition and schema](./data-project/datasources/products.datasource).
++ A [set of Pipes](./data-project/pipes/) that populate the Materialized Views used to generate daily and hourly rollups of event type counts. 
+ + A set of Pipes used to publish API Endpoints to list events and rank 'top' products. See [all the API Endpoints](./data-project/endpoints/).
 + A Grafana dashboard that consumes several API Endpoints. To learn more about building with Grafana, see [HERE](./dashboard/README.md).
 + Related to Grafana, the [Pipes folder](./data-project/pipes/) contains two API Endpoints for pulling product `brand` and `category` options from the `products` table to the Grafana UI. 
 
