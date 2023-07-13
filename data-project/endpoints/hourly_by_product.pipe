@@ -1,0 +1,105 @@
+TOKEN "hourly_by_product_endpoint_read_4726" READ
+
+NODE hourly_events_mv_pipe
+DESCRIPTION >
+    Features: API response date formatting. Case insensitive query parameters. 
+    For testing:
+    {% set brand = 'eastpak' %}
+    {% set category = 'backpack' %}
+    {% set start_time = '2023-07-11 23:00:00' %}
+    {% set end_time = '2023-07-12 23:00:00' %}
+
+SQL >
+
+    %
+
+    SELECT 
+      formatDateTime(e.event_hour, '%Y-%m-%d %H:00') as hour, 
+      countMerge(e.n_events) as total_events,
+      countMerge(e.n_views) as view_events,
+      countMerge(e.n_carts) as cart_events,
+      countMerge(e.n_sales) as sale_events
+    FROM hourly_events_details_mv AS e
+    JOIN products AS p on p.product = e.product
+    WHERE 1=1
+    {% if defined(brand) %}
+      {% if brand != 'all' %}
+        AND lowerUTF8(p.brand) = lowerUTF8({{ String(brand, 'all', description="Brand name. Default is all brands. Available brands: 'ASICS', 'Fila', 'Puma', Nike', 'Adidas', 'EastPak'")}})
+      {% end %}
+    {% end %}
+    {% if defined(category) %}
+       {% if category != 'all' %}
+          AND lowerUTF8(p.category) = lowerUTF8({{ String(category, 'all', description="Product category. Default is all categories. Available categories: 'shoe', 'shirt', 'pants', 'swimsuit', 'backpack' ''")}})
+      {% end %}
+    {% end %}
+    {% if defined(start_time) and defined(end_time) %}
+          AND toDateTime(e.event_hour) BETWEEN
+          parseDateTimeBestEffort({{ DateTime( start_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to 24 hours ago. Defines the start of the period of interest. ", ) }})
+               AND parseDateTimeBestEffort({{ DateTime( end_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to time of request. Defines the end of the period of interest.", ) }})
+     {% end %}
+     {% if not defined(start_time) and not defined(end_time) %}
+         AND toDateTime(e.event_hour) BETWEEN addDays(now(), -7) AND now()
+     {% end %}
+     {% if defined(start_time) and not defined(end_time) %}
+         AND toDateTime(e.event_hour) BETWEEN parseDateTimeBestEffort({{ DateTime(start_time) }}) AND now()
+     {% end %}
+     {% if not defined(start_time) and defined(end_time) %}
+         AND toDateTime(e.event_hour)
+            BETWEEN addDays(toDateTime(parseDateTimeBestEffort({{ DateTime(end_time) }}), -7) AND parseDateTimeBestEffort({{ DateTime(end_time) }})
+     {% end %}
+    GROUP BY e.event_hour
+    ORDER BY e.event_hour DESC
+    LIMIT {{ Int16(max_events, 10000, description="Maximum number of events to return.") }}
+
+
+
+NODE hourly_by_product_1
+SQL >
+
+    %
+    {% set start_time = '2023-07-11 21:00:00' %}
+    {% set brand = 'all' %}
+    {% set category = 'shoe' %}
+
+    SELECT 
+      formatDateTime(e.event_hour, '%Y-%m-%d %H:00') as hour, 
+      p.product,
+      p.category,
+      p.brand,
+      countMerge(e.n_events) as total_events,
+      countMerge(e.n_views) as view_events,
+      countMerge(e.n_carts) as cart_events,
+      countMerge(e.n_sales) as sale_events
+    FROM hourly_events_details_mv AS e
+    JOIN products AS p on p.product = e.product
+    WHERE 1=1
+    {% if defined(brand) %}
+      {% if brand != 'all' %}
+        AND lowerUTF8(p.brand) = lowerUTF8({{ String(brand, 'all', description="Brand name. Default is all brands. Available brands: 'ASICS', 'Fila', 'Puma', Nike', 'Adidas', 'EastPak'")}})
+      {% end %}
+    {% end %}
+    {% if defined(category) %}
+       {% if category != 'all' %}
+          AND lowerUTF8(p.category) = lowerUTF8({{ String(category, 'all', description="Product category. Default is all categories. Available categories: 'shoe', 'shirt', 'pants', 'swimsuit', 'backpack' ''")}})
+      {% end %}
+    {% end %}
+    {% if defined(start_time) and defined(end_time) %}
+          AND toDateTime(e.event_hour) BETWEEN
+          parseDateTimeBestEffort({{ DateTime( start_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to 24 hours ago. Defines the start of the period of interest. ", ) }})
+               AND parseDateTimeBestEffort({{ DateTime( end_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to time of request. Defines the end of the period of interest.", ) }})
+     {% end %}
+     {% if not defined(start_time) and not defined(end_time) %}
+         AND toDateTime(e.event_hour) BETWEEN addDays(now(), -7) AND now()
+     {% end %}
+     {% if defined(start_time) and not defined(end_time) %}
+         AND toDateTime(e.event_hour) BETWEEN parseDateTimeBestEffort({{ DateTime(start_time) }}) AND now()
+     {% end %}
+     {% if not defined(start_time) and defined(end_time) %}
+         AND toDateTime(e.event_hour)
+            BETWEEN addDays(toDateTime(parseDateTimeBestEffort({{ DateTime(end_time) }}), -7) AND parseDateTimeBestEffort({{ DateTime(end_time) }})
+     {% end %}
+    GROUP BY e.event_hour, p.category, p.brand, p.product
+    ORDER BY e.event_hour DESC
+    LIMIT {{ Int16(max_events, 1000, description="Maximum number of events to return.") }}
+
+

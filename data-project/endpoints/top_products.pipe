@@ -1,0 +1,61 @@
+TOKEN "top_products_endpoint_read_8686" READ
+
+NODE top_5_products
+SQL >
+
+    %
+
+
+     SELECT 
+      p.product, 
+      p.category, 
+      p.model, 
+      p.brand, 
+      p.price, 
+      COUNT(*) AS event_count, 
+      (p.price * COUNT(*)) AS total_sales
+    FROM events_mv AS e
+    JOIN products AS p on p.product = e.product 
+    WHERE 
+      e.event = 'sale' 
+     {% if defined(start_time) and defined(end_time) %}
+             AND toDateTime(e.event_time) BETWEEN parseDateTimeBestEffort({{ DateTime(start_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to 24 hours ago. Defines the start of the period of interest. ") }}) AND parseDateTimeBestEffort({{ DateTime(end_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to time of request. Defines the end of the period of interest.") }})
+         {% end %}
+         {% if not defined(start_time) and not defined(end_time) %}
+            AND toDateTime(e.event_time) BETWEEN addDays(now(),-1) AND now()
+         {% end %}
+         {% if defined(start_time) and not defined(end_time) %}
+             AND toDateTime(e.event_time) BETWEEN parseDateTimeBestEffort({{ DateTime(start_time) }}) AND now()
+         {% end %}
+         {% if not defined(start_time) and defined(end_time) %}
+             AND toDateTime(e.event_time) BETWEEN addDays(toDateTime(parseDateTimeBestEffort({{DateTime(end_time)}}),-1) AND parseDateTimeBestEffort({{ DateTime(end_time) }})
+         {% end %}
+    GROUP BY p.product, p.category, p.model, p.brand, p.price
+    ORDER BY total_sales DESC
+
+
+
+
+NODE top_products_1
+DESCRIPTION >
+    TODO: test with set variables
+
+SQL >
+
+    %
+    SELECT * 
+    FROM top_5_products
+    WHERE 1=1
+    {% if defined(brand) %}
+      {% if brand != 'all' %}
+        AND lowerUTF8(brand) = lowerUTF8({{ String(brand, 'all', description="Brand name. Default is all brands. Available brands: 'ASICS', 'Fila', 'Puma', Nike', 'Adidas', 'EastPak'")}})
+      {% end %}
+    {% end %}
+    {% if defined(category) %}
+       {% if category != 'all' %}
+          AND lowerUTF8(category) = lowerUTF8({{ String(category, 'all', description="Product category. Default is all categories. Available categories: 'shoe', 'shirt', 'pants', 'swimsuit', 'backpack' ''")}})
+      {% end %}
+    {% end %}
+    LIMIT 5
+
+

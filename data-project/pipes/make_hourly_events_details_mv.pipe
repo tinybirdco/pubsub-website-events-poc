@@ -1,0 +1,25 @@
+DESCRIPTION >
+	This Pipe counts events as fresh data streams in and builds new hourly metric entries... Keeps track of total events and counts view/cart/sale event types.
+
+
+NODE hourly_events
+SQL >
+
+    SELECT
+        toStartOfHour(event_time) AS event_hour,
+        product,
+        countState() AS n_events,
+        countIfState(event = 'view') AS n_views,
+        countIfState(event = 'cart') AS n_carts,
+        countIfState(event = 'sale') AS n_sales
+    FROM events_mv
+    GROUP BY
+        event_hour,
+        product
+
+TYPE materialized
+DATASOURCE hourly_events_details_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYear(event_hour)"
+ENGINE_SORTING_KEY "event_hour, product"
+

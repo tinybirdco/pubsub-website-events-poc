@@ -17,7 +17,7 @@ SQL >
       p.model, 
       p.brand, 
       p.price 
-    FROM events_mv e, sprinter_products p
+    FROM events_mv e, products p
     WHERE e.product = p.product
       {% if defined(start_time) and defined(end_time) %}
         AND toDateTime(event_time) BETWEEN {{ DateTime(start_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to 24 hours ago. Defines the start of the period of interest. ") }} AND {{ DateTime(end_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to time of request. Defines the end of the period of interest.") }}

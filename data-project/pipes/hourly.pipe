@@ -1,0 +1,16 @@
+TOKEN "hourly_endpoint_read_7273" READ
+
+NODE hourly_events_mv_pipe
+SQL >
+
+    SELECT 
+      formatDateTime(event_hour, '%Y-%m-%d %H:00') AS hour, 
+      countMerge(n_events) AS total_events,
+      countMerge(n_views) AS view_events,
+      countMerge(n_carts) AS cart_events,
+      countMerge(n_sales) AS sale_events
+    FROM hourly_events_mv
+    GROUP BY event_hour
+    ORDER BY event_hour DESC
+
+

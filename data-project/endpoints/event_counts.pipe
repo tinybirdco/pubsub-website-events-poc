@@ -1,0 +1,29 @@
+TOKEN "untitled_pipe_2913_endpoint_read_9512" READ
+
+NODE event_counts_1
+SQL >
+
+    %
+    SELECT COUNT(*) as Events,
+    SUM(CASE WHEN event = 'view' THEN 1 ELSE 0 END) AS Views,
+    SUM(CASE WHEN event = 'cart' THEN 1 ELSE 0 END) AS Carts,
+    SUM(CASE WHEN event = 'sale' THEN 1 ELSE 0 END) AS Sales
+    FROM events_mv
+    WHERE 1=1
+    {% if defined(start_time) and defined(end_time) %}
+          AND toDateTime(event_time) BETWEEN
+          parseDateTimeBestEffort({{ DateTime( start_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to 7 days ago. Defines the start of the period of interest. ", ) }})
+               AND parseDateTimeBestEffort({{ DateTime( end_time, description="'YYYY-MM-DD HH:mm:ss'. UTC. Optional and defaults to time of request. Defines the end of the period of interest.", ) }})
+     {% end %}
+     {% if not defined(start_time) and not defined(end_time) %}
+         AND toDateTime(event_time) BETWEEN addDays(now(), -365) AND now()
+     {% end %}
+     {% if defined(start_time) and not defined(end_time) %}
+         AND toDateTime(event_time) BETWEEN parseDateTimeBestEffort({{ DateTime(start_time) }}) AND now()
+     {% end %}
+     {% if not defined(start_time) and defined(end_time) %}
+         AND toDateTime(event_time)
+            BETWEEN addDays(toDateTime(parseDateTimeBestEffort({{ DateTime(end_time) }}), -7) AND parseDateTimeBestEffort({{ DateTime(end_time) }})
+     {% end %}
+
+

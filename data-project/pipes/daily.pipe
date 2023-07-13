@@ -1,0 +1,14 @@
+NODE daily_events_mv_pipe
+SQL >
+
+    SELECT 
+      formatDateTime(event_day, '%Y-%m-%d') as date, 
+      countMerge(n_events),
+      countMerge(n_views),
+      countMerge(n_carts),
+      countMerge(n_sales)
+    FROM daily_events_mv
+    GROUP BY event_day
+    ORDER BY event_day DESC
+
+
