@@ -26,7 +26,7 @@
     {
       "datasource": {
         "type": "marcusolsson-json-datasource",
-        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+        "uid": ""
       },
       "fieldConfig": {
         "defaults": {
@@ -72,7 +72,7 @@
           "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+            "uid": ""
           },
           "fields": [
             {
@@ -127,7 +127,7 @@
     {
       "datasource": {
         "type": "marcusolsson-json-datasource",
-        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+        "uid": ""
       },
       "fieldConfig": {
         "defaults": {
@@ -185,7 +185,7 @@
           "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+            "uid": ""
           },
           "fields": [
             {
@@ -244,7 +244,7 @@
     {
       "datasource": {
         "type": "marcusolsson-json-datasource",
-        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+        "uid": ""
       },
       "fieldConfig": {
         "defaults": {
@@ -303,7 +303,7 @@
           "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+            "uid": ""
           },
           "fields": [
             {
@@ -375,7 +375,7 @@
     {
       "datasource": {
         "type": "marcusolsson-json-datasource",
-        "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+        "uid": ""
       },
       "description": "",
       "fieldConfig": {
@@ -491,7 +491,7 @@
           "cacheDurationSeconds": 0,
           "datasource": {
             "type": "marcusolsson-json-datasource",
-            "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+            "uid": ""
           },
           "fields": [
             {
@@ -571,7 +571,7 @@
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
-          "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+          "uid": ""
         },
         "definition": "$.data[*].category",
         "hide": 0,
@@ -610,7 +610,7 @@
         },
         "datasource": {
           "type": "marcusolsson-json-datasource",
-          "uid": "b1436dbb-6193-4920-aa28-2bef4f1902f2"
+          "uid": ""
         },
         "definition": "$.data[*].brand",
         "hide": 0,

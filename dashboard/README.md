@@ -5,3 +5,4 @@
 * You will also need to create your own Data Source and configure it with your Workspace URL. 
 * The `tinybird-ui-apis` folder contains two Pipe definitions that provide simple API Endpoints for returning supported values for Grafana UI controls/filters. Grafana will make requests to get the strings/names for your dashboard UI. 
 
+To get started, see this [guide on consuming API Endpoints in Grafana](https://www.tinybird.co/docs/guides/consume-api-endpoints-in-grafana.html).  
