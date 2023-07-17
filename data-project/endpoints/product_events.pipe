@@ -2,7 +2,7 @@ DESCRIPTION >
 	Retrieves events with product details.
 
 
-TOKEN "product_events_endpoint_read_8295" READ
+TOKEN "grafana_read" READ
 
 NODE apply_time_period
 SQL >

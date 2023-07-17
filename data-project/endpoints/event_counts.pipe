@@ -1,4 +1,4 @@
-TOKEN "untitled_pipe_2913_endpoint_read_9512" READ
+TOKEN "grafana_read" READ
 
 NODE event_counts_1
 SQL >

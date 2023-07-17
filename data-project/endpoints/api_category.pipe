@@ -1,4 +1,4 @@
-TOKEN "api_category_endpoint_read_5838" READ
+TOKEN "grafana_read" READ
 
 NODE endpoint
 SQL >

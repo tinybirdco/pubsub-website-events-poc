@@ -1,4 +1,4 @@
-TOKEN "hourly_endpoint_read_7273" READ
+TOKEN "demo_mv" READ
 
 NODE hourly_events_mv_pipe
 SQL >

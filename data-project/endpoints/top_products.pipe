@@ -1,4 +1,4 @@
-TOKEN "top_products_endpoint_read_8686" READ
+TOKEN "grafana_read" READ
 
 NODE top_5_products
 SQL >
