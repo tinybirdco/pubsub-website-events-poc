@@ -1,4 +1,4 @@
-TOKEN "hourly_by_product_endpoint_read_4726" READ
+TOKEN "grafana_read" READ
 
 NODE hourly_events_mv_pipe
 DESCRIPTION >

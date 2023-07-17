@@ -1,5 +1,3 @@
-TOKEN "event_extraction_pipe_endpoint_read_2849" READ
-
 NODE decode_pubsub_messages
 SQL >
 

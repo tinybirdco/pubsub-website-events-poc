@@ -1,3 +1,5 @@
+TOKEN "demo_mv" READ
+
 NODE daily_events_mv_pipe
 SQL >
 
