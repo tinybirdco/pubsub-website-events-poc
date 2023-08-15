@@ -8,7 +8,7 @@
 
 + `hourly_by_product` - A work in progress to expand the event count rollups and filter by product attributes. 
 
-####API Endpoints to serve option data to client requests 
+#### API Endpoints to serve option data to client requests 
 
 For this demo, the Grafana dashboard is calling these for rendering UI dropdown controls for filtering on these attributes. 
 
