@@ -17,6 +17,8 @@ This repo contains an ecommerce demo that simulates a live stream of website use
 
 For this demo, Google Pub/Sub is used to push messages to Tinybird. The messages arrive with an encoded 'message_data' value with encoded `event` objects. These are JSON objects that describe the upstream 'view', 'cart', and 'sale' events. 
 
+To set up this demo, see this [Ingest from Google Pub/Sub](https://www.tinybird.co/docs/guides/ingest-from-google-pubsub.html) guide. It walks through creating a stream topic and configuring Pub/Sub to publish the data to the Tinybird Events API. 
+
 For this demo, we specifically wanted to work with "very large" JSON objects. In this case we used this [example JSON object](./event-object/event-example.json). This static object is appended to a dynamic event object created in the script. The script generates a randomized event object with these attributes:
 
 ```python
@@ -33,9 +35,11 @@ For this demo, we specifically wanted to work with "very large" JSON objects. In
         'city': random.choice(cities),  # Add randomly picked city attribute
 ```
 
-#### Setting up your Pub/Sub feed: 
+#### Generating webstore events 
 
-* Create a Pub/Sub topic ID and have your project ID handy. 
+* Create a Pub/Sub topic ID and have your project ID handy. These IDs are needed to configure the Python script and the URL it posts event data to.
+
+* Set up a Google Pub/Sub **push** subscription to write the encoded data to Tinybird using the Events API. 
 
 * Use this [Python script](./data-generator/pubsub_json_generator.py) to create JSON `event` objects and publish them to Google Pub/Sub. 
 
@@ -44,9 +48,6 @@ from google.cloud import pubsub_v1
 topic_path = publisher.topic_path(project_id, topic_id)
 future = publisher.publish(topic_path, data)
 ```
-* Setting up a Google Pub/Sub **push** subscription to write the encoded data to Tinybird using the Events API. 
-
-For more details, see our [Ingest from Google Pub/Sub](https://www.tinybird.co/docs/guides/ingest-from-google-pubsub.html) guide.
 
 ## Generating daily and hourly rollups of event data
 
